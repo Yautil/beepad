@@ -1,12 +1,10 @@
 <div align="center">
   <h1>BeePad</h1>
 	<p>An Anonym Collaborative Online Text-Editor</p>
-</div>
-
 [![Known Vulnerabilities](https://snyk.io/test/github/yautil/beepad/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yautil/beepad?targetFile=package.json)
 [![](https://img.shields.io/github/issues-raw/yautil/beepad.svg)](https://github.com/Yautil/beepad/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/yautil/beepad.svg)]()
-
+</div>
 ## Get Started
 Clone the Repo or download our latest release [HERE](https://files.catbox.moe/r847kl.png)!
 
