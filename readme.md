@@ -1,3 +1,6 @@
+
+<div style="text-align:center">
+
 # BeePad
 
 [![Known Vulnerabilities](https://snyk.io/test/github/yautil/beepad/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yautil/beepad?targetFile=package.json)
@@ -5,12 +8,14 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/yautil/beepad.svg)]()
 
 ## Get Started
-Clone the Repo or download our llatest release [HERE](https://files.catbox.moe/r847kl.png)!
+Clone the Repo or download our latest release [HERE](https://files.catbox.moe/r847kl.png)!
 
 Start ```npm install``` in Root of repo.
 
 Then Start Server with ```node server.js```
 If needed, install webpack and run ```npx webpack src/client.js dist/client.js
+
+</div>
 
 ## GNU GPLv3.0+
 ````
