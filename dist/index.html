@@ -20,7 +20,7 @@
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!-_()";
 
         // Generates random String with "possible" chars only
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 0xF; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
 
         // Force Server to populate new Pad with Text to DataBase
