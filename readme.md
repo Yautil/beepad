@@ -1,7 +1,5 @@
 # BeePad
 
-[TOC]
-
 <div style="page-break-after:always"></div>
 
 ## GNU GPLv3.0+
@@ -30,7 +28,7 @@ Unterstützt wird "BeePad" mit einem Markdown-Parser.
 "BeePad" arbeitet in Echtzeit.
 
 Die Webanwendung wurd in NodeJS entwickelt, da [blabla asynchron blabla].
-![http://www.dotnet-akademie.de/glossar/alle/8062/MEAN.aspx](https://files.catbox.moe/0330fk.png)
+![https://strongloop.com/blog-assets/2014/01/threading_node.png](https://strongloop.com/blog-assets/2014/01/threading_node.png)
 
 Es muss mindestens einen Server für n-Clients geben. Dieser stellt dem Client HTML und JavaScript Dateien zur verfügung.
 
