@@ -15,8 +15,9 @@
     <title>BeePad</title>
 </head>
 
-<body style="height: 100%; padding: 0;">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body style="height: 100%; padding: 0; overflow: hidden;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 70px;">
+        <img class="" src="https://www.goodfreephotos.com/albums/vector-images/cartoon-bee-vector-art.png" style="height: 40px; padding-right: 10px;"/>
         <a class="navbar-brand" href="#">BeePad</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -40,20 +41,83 @@
             </p>
         </div>
     </nav>
-    <div class="row" style="min-height: 80%; height: auto !important; height: 80%%; margin: 0 auto -100px; padding-top:10px; vertical-align:bottom;">
+    <div class="row" style="min-height: 80%; height: auto !important; height: 80%; max-height: 80%; overflow:hidden; margin: 0 auto -100px; padding-top:10px; vertical-align:bottom;">
         <div class="col-md-6">
-            <h2>Dein Pad ⬇️</h2>
+            <h2>⬇️Dein Pad</h2>
             <textarea id="beePad" onkeyup="deployChanges();" style="height:100%; width:100%;"></textarea>
         </div>
         <div class="col-md-6">
             <h2>
-                Markdown ⬇️
+                ⬇️️Markdown
             </h2>
-            <div id="markdown" class="markdown-body" style="flex:1; overflow-y: scroll; height:100%; width:100%;"></div>
+            <div id="markdown" class="markdown-body" style="overflow-y: scroll; height:100%; width:100%; border:1px solid darkgrey"></div>
         </div>
-
     </div>
-
+    <div name="footer" style="background-color:#1a1a1a; position:absolute; width: 100%; height: 100px; bottom: 0px;">
+        <center>
+            <div style="border-radius: 1px; margin-top: -15px; color: olivedrab; background-color:#1a1a1a; width: 10%; text-align:center">⬇️️Markdown Helper⬇️️</div>
+        </center>
+        <div style="padding: 10px; font-size: 10px; text-align: center;">
+            <div class="row">
+                    <div class="col-md-2">
+                        # Überschrift 1
+                        <br/> ## Überschrift 2
+                        <br/> ### Überschrift 3
+                        <br/> #### ...
+                    </div>
+                    <div class="col-md-3">
+                        **Fett**
+                        <br/> *Schräg*
+                        <br/> ![alt text](url)
+                        <br/> [link text](url)
+                    </div>
+                    <div class="col-md-2">
+                        1. Geordnete Liste
+                        <br/> - Ungeordnete Liste
+                    </div>
+                    <div class="col-md-3">
+                        @githubUsername
+                        <br/> `code`
+                        <br/> ```block code```
+                    </div>
+                    <div class="col-md-2">
+                        | Eine | Tabelle |
+                        <br/> | ---: | :--- |
+                        <br/> | Eine | Zeile |
+                    </div>
+            </div>
+            <!-- <table style="width: 100%;">
+                <tr>
+                    <td>
+                        # Überschrift 1
+                        <br/> ## Überschrift 2
+                        <br/> ### Überschrift 3
+                        <br/> #### ...
+                    </td>
+                    <td>
+                        **Fett**
+                        <br/> *Schräg*
+                        <br/> ![alt text](url)
+                        <br/> [link text](url)
+                    </td>
+                    <td>
+                        1. Geordnete Liste
+                        <br/> - Ungeordnete Liste
+                    </td>
+                    <td>
+                        @githubUsername
+                        <br/> `code`
+                        <br/> ```block code```
+                    </td>
+                    <td>
+                        | Eine | Tabelle |
+                        <br/> | ---: | :--- |
+                        <br/> | Eine | Zeile |
+                    </td>
+                </tr>
+            </table> -->
+        </div>
+    </div>
     </div>
 
     <!-- Optional JavaScript -->

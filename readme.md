@@ -16,6 +16,11 @@ Start ```npm install``` in Root of repo.
 Then Start Server with ```node server.js```
 If needed, install webpack and run ```npx webpack src/client.js dist/client.js```
 
+## Screenshots
+![](https://files.catbox.moe/a8s25l.png)
+![](https://files.catbox.moe/xdus4o.gif)
+![](https://files.catbox.moe/lv39ew.png)
+
 ## GNU GPLv3.0+
 ````
  BeePad - NodeJS Server File
