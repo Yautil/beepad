@@ -1,5 +1,7 @@
 <div align="center">
+	
 ![](https://files.catbox.moe/2giu3o.gif)
+
   <h1>BeePad</h1>
 	<p>An Anonym Collaborative Online Text-Editor</p>
 	
