@@ -1,6 +1,6 @@
 {
   "name": "beepad",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "anonym collaborative online text-editor",
   "main": "server.js",
   "scripts": {
