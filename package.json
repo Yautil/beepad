@@ -1,7 +1,7 @@
 {
   "name": "beepad",
   "version": "1.0.0",
-  "description": "We Mark That Down",
+  "description": "anonym collaborative online text-editor",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
