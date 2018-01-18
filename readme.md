@@ -1,10 +1,9 @@
 <div align="center">
-	  <h1>BeePad</h1>
+<h1>BeePad</h1>
 	
 ![](https://files.catbox.moe/2giu3o.gif)
 
-
-	<p>An Anonym Collaborative Online Text-Editor</p>
+<p>An Anonym Collaborative Online Text-Editor</p>
 	
 [![Known Vulnerabilities](https://snyk.io/test/github/yautil/beepad/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yautil/beepad?targetFile=package.json)
 [![](https://img.shields.io/github/issues-raw/yautil/beepad.svg)](https://github.com/Yautil/beepad/issues)
