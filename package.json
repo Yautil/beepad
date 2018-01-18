@@ -21,5 +21,10 @@
   },
   "devDependencies": {
     "uglifyjs-webpack-plugin": "^1.1.6"
+  },
+  "bin": "server.js",
+  "pkg": {
+    "scripts": "dist/*.*",
+    "assets": "dist/app/*.*"
   }
 }

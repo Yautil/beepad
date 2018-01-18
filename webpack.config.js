@@ -1,16 +1,17 @@
-const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const path = require("path");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
 
 module.exports = {
-  entry: './src/client.js',
+  entry: "./src/beepad_client.js",
   output: {
-    filename: 'client.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: "client.js",
+    path: path.resolve(__dirname, "dist"),
+    library: "home"
   },
   resolve: {
     modules: [
-      path.resolve('./src'),
-      path.resolve('./node_modules')
+      path.resolve("./src"),
+      path.resolve("./node_modules")
     ]
   },
   plugins: [

@@ -48,18 +48,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("X-HTTP-Method-Override"));
 
 //  Define static public folder
+app.use(express.static(path.join(__dirname, "src")));
 app.use(express.static(path.join(__dirname, "dist")));
-app.use("/css", express.static(path.join(__dirname, "dist", "css")));
-//app.use("/app", express.static(path.join(__dirname, "dist", "app")));
-if (dev) app.use("/dev", express.static(path.join(__dirname, "dist", "dev")));
+app.use("css", express.static(path.join(__dirname, "dist/css")));
+if (dev) app.use("dev", express.static(path.join(__dirname, "dist/dev")));
 
 //  Set Routing for Root and Wildcard 
 app.get("/", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "./dist/", "index.html"))
+    res.sendFile(path.join(__dirname, "dist") + "/index.html")
 })
 
 app.get("/pad/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "./dist/app/", "pad.html"))
+    res.sendFile(path.join(__dirname, "dist", "app") + "/pad.html")
 })
 
 //  Set routing for Debugging if in dev mode
@@ -131,5 +131,5 @@ io.on("connection", socket => {
 });
 
 //  Console Output
-console.log(`======= ${chalk.black.bgWhite("WeMarkThatDown")} =======
+console.log(`======= ${chalk.black.bgWhite("BEEPAD SERVER")} =======
 ${chalk.green("Server is running on PORT")} ${chalk.yellow(server_port)}`);
