@@ -99,9 +99,13 @@ io.on("connection", socket => {
 
     // On event "join_into_pad"
     socket.on("joinPad", (padPermalink, callback) => {
-        socket.join(padPermalink, () => {
-            callback({ msg: "OK: Joined Pad " + padPermalink });
-        })
+        if (padPermalink.includes("lock")) {
+            callback({ msg: "ATTENTION: Locked Pad " + padPermalink })
+        } else {
+            socket.join(padPermalink, () => {
+                callback({ msg: "OK: Joined Pad " + padPermalink });
+            })
+        }
         // socket.to(payload.padPermalink).emit("newAuthor", payload.authorName)
     });
 
@@ -122,11 +126,22 @@ io.on("connection", socket => {
 
     // send newText to other Clients
     socket.on("deployChanges", (padPermalink, newText) => {
-        dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
-            if (err && dev) console.log(err);
-            if (dev) console.log(res);
-        });
+        if (!(padPermalink.includes("lock"))) {
+            dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
+                if (err && dev) console.log(err);
+                if (dev) console.log(res);
+            });
         socket.to(padPermalink).emit("applyChanges", newText, useDMP)
+        };
+    })
+
+    socket.on("lockDoc", (padPermalink, newText) => {
+            padPermalink = padPermalink + "lock"
+            dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
+                if (err && dev) console.log(err);
+                if (dev) console.log(res);
+            });
+        socket.to(padPermalink).emit("applyChanges", newText, useDMP);
     })
 });
 
