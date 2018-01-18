@@ -1,4 +1,5 @@
 <div align="center">
+![](https://files.catbox.moe/2giu3o.gif)
   <h1>BeePad</h1>
 	<p>An Anonym Collaborative Online Text-Editor</p>
 	
@@ -20,6 +21,7 @@ If needed, install webpack and run ```npx webpack src/client.js dist/client.js``
 ![](https://files.catbox.moe/a8s25l.png)
 ![](https://files.catbox.moe/xdus4o.gif)
 ![](https://files.catbox.moe/lv39ew.png)
+![](https://files.catbox.moe/1oxkm7.png)
 
 ## GNU GPLv3.0+
 ````
