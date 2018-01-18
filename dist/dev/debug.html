@@ -7,11 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>BeePad - Debugging</title>
-    <link rel="stylesheet" href="/css/gh_markdown.css">
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/diff_match_patch.js"></script>
-    <script src="/showdown.min.js"></script>
-
     <link rel="stylesheet" hred="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/markdown_GitHub.css">
@@ -58,13 +53,18 @@
                     <td>
                         <button onclick="newRandomPad();">Create new random Pad</button>
                     </td>
+                    <td>
+                        <button onclick="lockThisDoc();">LockThisDoc</button>
+                    </td>
                 </tr>
             </table>
             <div id="markdown" class="markdown-body" style="height: 100%; overflow-y:scroll"></div>
         </div>
     </div>
     <div id="serverStatus" style="position: absolute; height: 5%; width: 99%; bottom: 0; text-align: center"></div>
-
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/diff_match_patch.js"></script>
+    <script src="/showdown.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -76,10 +76,12 @@
         // Permalink is in Pathname...
         var padPermalink = window.location.pathname;
         // ...but behind "/pad/" (5 chars)
+
         padPermalink = padPermalink.slice(7);
 
+
         // Socket.io Handler
-        const socket = io();
+        var socket = io();
 
         // Diff_Match_Patch Handler
         var dmp = new diff_match_patch();
@@ -154,6 +156,12 @@
         // Funtion to directly parse markdown into div
         function parseMarkdown() {
             document.getElementById("markdown").innerHTML = converter.makeHtml(beePad.value);
+        }
+
+        function lockThisDoc() {
+            let lockDoc = padPermalink + "lock";
+            socket.emit("lockDoc", padPermalink, beePad.value);
+            window.location.replace("/pad/" + lockDoc);
         }
     </script>
 

@@ -17,7 +17,8 @@
 
 <body style="height: 100%; padding: 0; overflow: hidden;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 70px;">
-        <img class="" src="https://www.goodfreephotos.com/albums/vector-images/cartoon-bee-vector-art.png" style="height: 40px; padding-right: 10px;"/>
+        <img class="" src="https://www.goodfreephotos.com/albums/vector-images/cartoon-bee-vector-art.png" style="height: 40px; padding-right: 10px;"
+        />
         <a class="navbar-brand" href="#">BeePad</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -30,7 +31,10 @@
                     <a class="nav-link" href="/">Neues Pad</a>
                 </li>
                 <li class="nav-item">
-                    <a id="copy" class="nav-link" onclick="document.execCommand('copy');">Einladen</a>
+                    <a id="copy" class="nav-link" onclick="document.execCommand('copy');" href="#">Einladen</a>
+                </li>
+                <li class="nav-item">
+                    <a id="copy" class="nav-link" onclick="lockThisDoc();" style="color: orange" href="#">Lock Erstellen</a>
                 </li>
             </ul>
             <a href="https://github.com/s0t7x">
@@ -59,32 +63,32 @@
         </center>
         <div style="padding: 10px; font-size: 10px; text-align: center;">
             <div class="row">
-                    <div class="col-md-2">
-                        # Überschrift 1
-                        <br/> ## Überschrift 2
-                        <br/> ### Überschrift 3
-                        <br/> #### ...
-                    </div>
-                    <div class="col-md-3">
-                        **Fett**
-                        <br/> *Schräg*
-                        <br/> ![alt text](url)
-                        <br/> [link text](url)
-                    </div>
-                    <div class="col-md-2">
-                        1. Geordnete Liste
-                        <br/> - Ungeordnete Liste
-                    </div>
-                    <div class="col-md-3">
-                        @githubUsername
-                        <br/> `code`
-                        <br/> ```block code```
-                    </div>
-                    <div class="col-md-2">
-                        | Eine | Tabelle |
-                        <br/> | ---: | :--- |
-                        <br/> | Eine | Zeile |
-                    </div>
+                <div class="col-md-2">
+                    # Überschrift 1
+                    <br/> ## Überschrift 2
+                    <br/> ### Überschrift 3
+                    <br/> #### ...
+                </div>
+                <div class="col-md-3">
+                    **Fett**
+                    <br/> *Schräg*
+                    <br/> ![alt text](url)
+                    <br/> [link text](url)
+                </div>
+                <div class="col-md-2">
+                    1. Geordnete Liste
+                    <br/> - Ungeordnete Liste
+                </div>
+                <div class="col-md-3">
+                    @githubUsername
+                    <br/> `code`
+                    <br/> ```block code```
+                </div>
+                <div class="col-md-2">
+                    | Eine | Tabelle |
+                    <br/> | ---: | :--- |
+                    <br/> | Eine | Zeile |
+                </div>
             </div>
         </div>
     </div>
@@ -198,6 +202,14 @@
                 document.getElementById("copy").innerHTML = "Link Kopiert!";
             }
         });
+
+        function lockThisDoc() {
+            if (!(padPermalink.includes("lock"))) {
+                let lockDoc = padPermalink + "lock";
+                socket.emit("lockDoc", padPermalink, beePad.value);
+                window.location.replace("/pad/" + lockDoc);
+            }
+        }
     </script>
 </body>
 
