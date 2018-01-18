@@ -19,6 +19,9 @@ Start ```npm install``` in Root of repo.
 Then Start Server with ```node server.js```
 If needed, install webpack and run ```npx webpack src/client.js dist/client.js```
 
+## One Pager
+Get a look on [this sweet OnePager](https://github.com/Yautil/beepad/blob/master/BeePad_OnePager.pdf): ![](https://files.catbox.moe/nzm8mc.png)
+
 ## Screenshots
 ![](https://files.catbox.moe/a8s25l.png)
 ![](https://files.catbox.moe/xdus4o.gif)
