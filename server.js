@@ -73,8 +73,8 @@ var io = socketio(server);
 //  Providing Database Logic and override db_uri if in dev
 mongoose.connect(db_uri, { useMongoClient: true });
 let mongodb = mongoose.connection;
-mongodb.on("error", () => { console.log(chalk.red("Connection Error!")) });
-mongodb.once("open", () => { console.log(chalk.green("Connected to MongoDB!")) });
+mongodb.on("error", () => { console.log(chalk.red("DB Connection Error!")) });
+mongodb.once("open", () => { console.log(chalk.green("DB Connected to MongoDB!")) });
 mongoose.Promise = global.Promise;
 
 //  #   Define Database Model
