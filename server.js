@@ -31,7 +31,7 @@ var path = require("path");
 var chalk = require("chalk");
 
 //  Configurations
-const dev = false;
+const dev = true;
 const useDMP = true;
 const server_port = process.env.PORT || 80;
 const db_uri = "mongodb://localhost/beePad";
@@ -48,21 +48,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("X-HTTP-Method-Override"));
 
 //  Define static public folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "dist")));
+app.use("/css", express.static(path.join(__dirname, "dist", "css")));
+//app.use("/app", express.static(path.join(__dirname, "dist", "app")));
+if (dev) app.use("/dev", express.static(path.join(__dirname, "dist", "dev")));
 
 //  Set Routing for Root and Wildcard 
 app.get("/", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "./", "index.html"))
+    res.sendFile(path.resolve(__dirname, "./dist/", "index.html"))
 })
 
 app.get("/pad/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "./app/", "pad.html"))
+    res.sendFile(path.resolve(__dirname, "./dist/app/", "pad.html"))
 })
 
 //  Set routing for Debugging if in dev mode
 if (dev) {
     app.get("/debug/*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "./dev/", "debug.html"));
+        res.sendFile(path.resolve(__dirname, "./dist/dev/", "debug.html"));
     })
 };
 

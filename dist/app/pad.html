@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="de" style="height: 100%;">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" hred="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/markdown_GitHub.css">
+    <link rel="stylesheet" href="/css/printMedia.css">
+
+    <title>BeePad</title>
+</head>
+
+<body style="height: 100%; padding: 0;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">BeePad</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Neues Pad</a>
+                </li>
+                <li class="nav-item">
+                    <a id="copy" class="nav-link" onclick="document.execCommand('copy');">Einladen</a>
+                </li>
+            </ul>
+            <a href="https://github.com/s0t7x"><img src="https://cdn.iconscout.com/public/images/icon/free/png-512/github-36cbb10d3617a061-512x512.png" alt="" style="max-height:80px"></a>
+            <p>Server Status:
+                <div id="serverStatus" style="color:olivedrab"></div>
+            </p>
+        </div>
+    </nav>
+    <div class="row" style="min-height: 85%; height: auto !important; height: 100%; margin: 0 auto -100px; padding-top:10px; vertical-align:bottom;">
+        <div class="col-md-6">
+            <h2>Dein Pad ⬇️</h2>
+            <textarea id="beePad" onkeyup="deployChanges();" style="height:100%; width:100%;"></textarea>
+        </div>
+        <div class="col-md-6">
+            <h2>
+                Markdown ⬇️
+            </h2>
+            <div id="markdown" class="markdown-body" style="flex:1; overflow-y: scroll; height:100%; width:100%;"></div>
+        </div>
+
+    </div>
+
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/client.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
+    <!-- Clientside Connection Logic -->
+    <!-- ........................... -->
+</body>
+
+</html>

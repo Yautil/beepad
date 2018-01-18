@@ -1,6 +1,6 @@
 {
   "name": "beepad",
-  "version": "1.0.5",
+  "version": "1.1.5",
   "description": "anonym collaborative online text-editor",
   "main": "server.js",
   "scripts": {
@@ -11,10 +11,15 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "chalk": "^2.3.0",
+    "diff-match-patch": "^1.0.0",
     "express": "^4.16.2",
     "method-override": "^2.3.10",
     "mongoose": "^4.13.9",
     "path": "^0.12.7",
+    "showdown": "^1.8.6",
     "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "uglifyjs-webpack-plugin": "^1.1.6"
   }
 }
