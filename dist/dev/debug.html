@@ -11,10 +11,38 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/diff_match_patch.js"></script>
     <script src="/showdown.min.js"></script>
+
+    <link rel="stylesheet" hred="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/markdown_GitHub.css">
+    <link rel="stylesheet" href="/css/printMedia.css">
 </head>
 
 <body>
     <div id="wrapper" style="position:absolute; width:99%; height: 80%">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 70px;">
+            <img class="" src="https://www.goodfreephotos.com/albums/vector-images/cartoon-bee-vector-art.png" style="height: 40px; padding-right: 10px;"
+            />
+            <a class="navbar-brand" href="#">BeeR~Pad</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="color:red">DU BIST IM DEBUG MODUS, SCHALTE DANACH DEN DEV MODUS IM SERVER WIEDER AUS!</a>
+                    </li>
+                </ul>
+                <a href="https://github.com/s0t7x">
+                    <img src="https://cdn.iconscout.com/public/images/icon/free/png-512/github-36cbb10d3617a061-512x512.png" alt="" style="max-height:80px">
+                </a>
+                <p>Server Status:
+                    <div id="serverStatus" style="color:olivedrab"></div>
+                </p>
+            </div>
+        </nav>
         <div id="text_wrapper" style="background-color:aquamarine; position: absolute; width: 49%; height:100%">
             <textarea id="beePad" style="height: 100%; width: 100%;"></textarea>
         </div>
@@ -37,6 +65,12 @@
     </div>
     <div id="serverStatus" style="position: absolute; height: 5%; width: 99%; bottom: 0; text-align: center"></div>
 
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
     <script>
 
         // Permalink is in Pathname...
