@@ -100,7 +100,7 @@ io.on("connection", socket => {
     // On event "join_into_pad"
     socket.on("joinPad", (padPermalink, callback) => {
         if (padPermalink.includes("lock")) {
-            callback({ msg: "ATTENTION: Locked Pad " + padPermalink })
+            callback({ msg: "ATTENTION: " + padPermalink })
         } else {
             socket.join(padPermalink, () => {
                 callback({ msg: "OK: Joined Pad " + padPermalink });
