@@ -1,7 +1,7 @@
 <div align="center">
 <h1>BeePad</h1>
 	
-![](https://files.catbox.moe/2giu3o.gif)
+![](https://files.catbox.moe/038x4c.gif)
 
 <p>An Anonym Collaborative Text-Editor and Markdown Parser</p>
 	
