@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<!-- Debugging HTML - BeePad -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BeePad - Debugging</title>
+    <link rel="stylesheet" href="/gh_markdown.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/diff_match_patch.js"></script>
+    <script src="/showdown.min.js"></script>
+</head>
+
+<body>
+    <div id="wrapper" style="position:absolute; width:99%; height: 80%">
+        <div id="text_wrapper" style="background-color:aquamarine; position: absolute; width: 49%; height:100%">
+            <textarea id="beePad" _onkeyup="deployChanges();" style="height: 100%; width: 100%;"></textarea>
+        </div>
+        <div id="button_wrapper" style="position: absolute; width: 49%; left: 51%; height:100%">
+            <table>
+                <tr>
+                    <td>
+                        <button onclick="deployChanges();">Manually Fire Text To Others</button>
+                    </td>
+                    <td>
+                        <button onclick="parseMarkdown();">Manually Parse Markdown</button>
+                    </td>
+                    <td>
+                        <button onclick="newRandomPad();">Create new random Pad</button>
+                    </td>
+                </tr>
+            </table>
+            <div id="markdown" class="markdown-body" style="height: 100%; overflow-y:scroll"></div>
+        </div>
+    </div>
+    <div id="serverStatus" style="position: absolute; height: 5%; width: 99%; bottom: 0; text-align: center"></div>
+
+    <script>
+        //var user = [];
+
+        var padPermalink = window.location.pathname;
+        padPermalink = padPermalink.slice(7);
+
+        const socket = io();
+
+        var dmp = new diff_match_patch();
+        var converter = new showdown.Converter();
+        converter.setFlavor('github');
+        converter.setOption("openLinksInNewWindow", "true");
+        converter.setOption("tables", "true");
+
+        //function login() {
+        // converter.setOption("simpleLineBreaks", "true");
+        // converter.setOption("ghMentions", "true");
+        // converter.setOption("openLinksInNewWindow", "true");
+        // converter.setOption("emoji", "true");
+        // converter.setOption("ghMentions", "true");
+
+        // var myName = document.getElementById("name").value;
+
+        var beePad = document.getElementById("beePad");
+
+        socket.emit("joinPad", padPermalink, (callback) => {
+            document.getElementById("serverStatus").innerHTML = callback.msg;
+        });
+
+        socket.emit("dbReadText", padPermalink, (callback) => {
+            // if (callback == "none") window.location.replace("/");
+            beePad.value = callback;
+            parseMarkdown();
+        });
+
+        // document.getElementById("overlay").style = "visibility: hidden;"
+
+        //}
+
+        function patch_create(newText) {
+            var myText = beePad.value;
+            var diff = dmp.diff_main(myText, newText, true);
+
+            if (diff.length > 2) {
+                dmp.diff_cleanupSemantic(diff);
+            }
+
+            var patch_list = dmp.patch_make(myText, newText, diff);
+            return dmp.patch_toText(patch_list);
+        }
+
+
+        function patch_apply(patch_text) {
+            var myText = beePad.value;
+            var patches = dmp.patch_fromText(patch_text);
+
+            var results = dmp.patch_apply(patches, myText);
+            beePad.value = results[0];
+        }
+
+        socket.on("applyChanges", (newText, useDMP) => {
+            var cursor_start = beePad.selectionStart;
+            var cursor_end = beePad.selectionEnd;
+            if (useDMP) {
+                patch_apply(patch_create(newText));
+            } else {
+                beePad.value = newText;
+            }
+            beePad.selectionStart = cursor_start;
+            beePad.selectionEnd = cursor_end;
+            parseMarkdown();
+        });
+
+        // socket.on("newAuthor", (authorName) => {
+        //     console.log("Iz da: " + user.indexOf(authorName));
+        //     if (user.indexOf(authorName) > -1) {
+
+        //     } else {
+        //         user.push(authorName);
+        //         document.getElementById("user").innerHTML += (", " + authorName);
+        //     }
+        // });
+
+        function newRandomPad() {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!-_()";
+
+            for (var i = 0; i < 12; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            socket.emit("deployChanges", text, "New Random Pad :smile:");
+            window.location.replace("/pad/" + text);
+        }
+
+        function deployChanges() {
+            parseMarkdown();
+            socket.emit("deployChanges", padPermalink, beePad.value)
+        }
+
+        function parseMarkdown() {
+            document.getElementById("markdown").innerHTML = converter.makeHtml(beePad.value);
+        }
+    </script>
+
+</body>
+
+</html>

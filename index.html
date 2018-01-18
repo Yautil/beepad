@@ -1,0 +1,33 @@
+<html lang="de">
+<!-- Debugging HTML - BeePad -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BeePad - Debugging</title>
+    <link rel="stylesheet" href="/gh_markdown.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/diff_match_patch.js"></script>
+    <script src="/showdown.min.js"></script>
+    <script>
+    // Self-executed function
+    (() => {
+        // Socket.io Handler
+        const socket = io();
+
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!-_()";
+
+        // Generates random String with "possible" chars only
+        for (var i = 0; i < 12; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        // Force Server to populate new Pad with Text to DataBase
+        socket.emit("deployChanges", text, "# Dies ist jetzt *Dein* BeePad\n### Schön, dass du hier Bist!");
+        
+        // Redirect to new Pad Permalink
+        window.location.replace("/pad/" + text);
+    })();
+    </script>
+</head>

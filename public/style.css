@@ -1,0 +1,19 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .section-to-print * {
+        visibility: visible;
+      
+    }
+
+    .section-to-print {
+        position: absolute;
+        transform: translateX(-50%);
+        left: 0;
+        top: 0;
+        width: 200%;
+        overflow-y: auto;
+    }
+}

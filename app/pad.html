@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="de" style="height: 100%;">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" hred="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="/gh_markdown.css">
+
+    <title>BeePad</title>
+</head>
+
+<body style="height: 100%; padding: 0;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">BeePad</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Neues Pad</a>
+                </li>
+                <li class="nav-item">
+                    <a id="copy" class="nav-link" onclick="document.execCommand('copy');">Einladen</a>
+                </li>
+            </ul>
+            <a href="https://github.com/s0t7x"><img src="https://cdn.iconscout.com/public/images/icon/free/png-512/github-36cbb10d3617a061-512x512.png" alt="" style="max-height:80px"></a>
+            <p>Server Status:
+                <div id="serverStatus" style="color:olivedrab"></div>
+            </p>
+        </div>
+    </nav>
+    <div class="row" style="min-height: 85%; height: auto !important; height: 100%; margin: 0 auto -100px; padding-top:10px; vertical-align:bottom;">
+        <div class="col-md-6">
+            <h2>Dein Pad ⬇️</h2>
+            <textarea id="beePad" onkeyup="deployChanges();" style="height:100%; width:100%;"></textarea>
+        </div>
+        <div class="col-md-6">
+            <h2>
+                Markdown ⬇️
+            </h2>
+            <div id="markdown" class="markdown-body" style="flex:1; overflow-y: scroll; height:100%; width:100%;"></div>
+        </div>
+
+    </div>
+
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/diff_match_patch.js"></script>
+    <script src="/showdown.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
+    <!-- Clientside Connection Logic -->
+    <!-- ........................... -->
+    <script>
+
+        // Permalink is in Pathname...
+        var padPermalink = window.location.pathname;
+        // ...but behind "/pad/" (5 chars)
+        padPermalink = padPermalink.slice(5);
+
+        // Socket.io Handler
+        const socket = io();
+
+        // Diff_Match_Patch Handler
+        var dmp = new diff_match_patch();
+        // Showdown Handler to parse markdown
+        var converter = new showdown.Converter();
+        // Configurations for showdown
+        converter.setFlavor('github');
+        converter.setOption("openLinksInNewWindow", "true");
+        converter.setOption("tables", "true");
+
+        // Little Helper
+        var beePad = document.getElementById("beePad");
+
+        // Tell Server, we want to join our permalink Pad
+        socket.emit("joinPad", padPermalink, (callback) => {
+            document.getElementById("serverStatus").innerHTML = callback.msg;
+        });
+
+        // Read what is our initial Text (The One in DB atm.)
+        socket.emit("dbReadText", padPermalink, (callback) => {
+            if (callback == "none") window.location.replace("/");
+            beePad.value = callback;
+            parseMarkdown();
+        });
+
+
+        // Function to create a Text Patch
+        function patch_create(newText) {
+            var myText = beePad.value;
+            var diff = dmp.diff_main(myText, newText, true);
+
+            if (diff.length > 2) {
+                dmp.diff_cleanupSemantic(diff);
+            }
+
+            var patch_list = dmp.patch_make(myText, newText, diff);
+            return dmp.patch_toText(patch_list);
+        }
+
+        // Function to apply a Text Patch
+        function patch_apply(patch_text) {
+            var myText = beePad.value;
+            var patches = dmp.patch_fromText(patch_text);
+
+            var results = dmp.patch_apply(patches, myText);
+            beePad.value = results[0];
+        }
+
+        // Client-Response to "applyChanges"
+        socket.on("applyChanges", (newText, useDMP) => {
+            // Remember our cursor position
+            var cursor_start = beePad.selectionStart;
+            var cursor_end = beePad.selectionEnd;
+            // Depending on Server Configurations either use DMP or directly update
+            if (useDMP) {
+                patch_apply(patch_create(newText));
+            } else {
+                beePad.value = newText;
+            }
+            // Jump Back to our old cursor position
+            beePad.selectionStart = cursor_start;
+            beePad.selectionEnd = cursor_end;
+            parseMarkdown();
+        });
+
+        // Tell server that we have made some changes and want to deploy them
+        function deployChanges() {
+            parseMarkdown();
+            socket.emit("deployChanges", padPermalink, beePad.value)
+        }
+
+        // Funtion to directly parse markdown into div
+        function parseMarkdown() {
+            document.getElementById("copy").innerHTML="Einladen";
+            document.getElementById("markdown").innerHTML = converter.makeHtml(beePad.value);
+        }
+
+        // Create Event-Listener to write into clipboard when event is called
+        document.getElementById("copy").addEventListener("copy", function (event) {
+            event.preventDefault();
+            if (event.clipboardData) {
+                event.clipboardData.setData("text/plain", window.location.host + window.location.pathname);
+                console.log(event.clipboardData.getData("text"))
+                document.getElementById("copy").innerHTML="Link Kopiert!";
+            }
+        });
+    </script>
+</body>
+
+</html>

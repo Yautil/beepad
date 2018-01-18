@@ -1,0 +1,20 @@
+{
+  "name": "beepad",
+  "version": "1.0.0",
+  "description": "We Mark That Down",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yautil",
+  "license": "GPL-3.0+",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chalk": "^2.3.0",
+    "express": "^4.16.2",
+    "method-override": "^2.3.10",
+    "mongoose": "^4.13.9",
+    "path": "^0.12.7",
+    "socket.io": "^2.0.4"
+  }
+}
