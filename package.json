@@ -4,7 +4,7 @@
   "description": "anonym collaborative online text-editor",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm install && npm start"
   },
   "author": "Yautil",
   "license": "GPL-3.0+",
