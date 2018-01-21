@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/Glyphter.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css" />
+    <link href="./css/main.css" rel="stylesheet" />
+    <title>Document</title>
+</head>
+
+<body class="index-page">
+    <div class="row" style="height:100vh; margin-left:0;margin-right:0;">
+        <div name="sidebar" class="navbar col-md-1 bg-primary d-flex align-items-stretch justify-content-center h-100" style="padding:0">
+            <ul class="navbar-nav d-flex justify-content-center" style="margin:0; width:100%; text-align: center;">
+                <!-- <div class="navbar-nav d-flex justify-content-center" style="margin:0; width:100%; text-align: center;"> -->
+                <li class="nav-item">
+                    <a id="link_1" class="nav-link" href="#content">
+                        <i class="octicon octicon-organization" style="font-size: 48px; color: #95a5a6;"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="link_2" class="nav-link" href="#content">
+                        <i class="octicon octicon-graph" style="font-size: 48px; color: #95a5a6;"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex justify-content-end" href="https://github.com/yautil/" target="_blank">
+                        <img src="./img/logo.svg" style="width:120%;" alt=""></img>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="link_3" class="nav-link" href="#content">
+                        <i class="octicon octicon-database" style="font-size: 48px; color: #95a5a6;"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="link_4" class="nav-link" href="#content">
+                        <i class="octicon octicon-gear" style="font-size: 48px; color: #95a5a6;"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="content" class="col-md-11 bg-light h-100 mw-100 mh-100"></div>
+    </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script src="../js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+    <script src="../js/core/popper.min.js" type="text/javascript"></script>
+    <script src="../js/core/bootstrap.min.js" type="text/javascript"></script>
+    <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+    <script src="../js/plugins/bootstrap-switch.js"></script>
+    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+    <script src="../js/plugins/nouislider.min.js" type="text/javascript"></script>
+    <!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
+    <script src="../js/plugins/bootstrap-datepicker.js" type="text/javascript"></script>
+    <!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
+    <script src="../js/now-ui-kit.js?v=1.1.0" type="text/javascript"></script>
+    <script>
+        $("#link_1").click("./views/landing-page.html", navRefLink);
+
+        function navRefLink(uri) {
+            console.log(uri.data);
+            $(".nav-item").find(".active").removeClass("active");
+            $("#content").load(uri.data);
+            console.log($(this));
+            $(this).parent().addClass("active");
+        }
+
+        //$(() => { $("#content").load("./views/landing-page.html"); });
+    </script>
+
+</body>
+
+</html>

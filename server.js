@@ -55,7 +55,7 @@ if (dev) app.use("dev", express.static(path.join(__dirname, "dist/dev")));
 
 //  Set Routing for Root and Wildcard 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "dist") + "/index.html")
+    res.sendFile(path.join(__dirname, "dist") + "/main.html")
 })
 
 app.get("/pad/*", (req, res) => {
