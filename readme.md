@@ -1,13 +1,15 @@
+[![GitHub package version](https://img.shields.io/github/package-json/v/badges/shields.svg)]()
+[![Build Status](https://travis-ci.org/Yautil/beepad.svg?branch=master)](https://travis-ci.org/Yautil/beepad)
+[![Known Vulnerabilities](https://snyk.io/test/github/yautil/beepad/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yautil/beepad?targetFile=package.json)
+[![](https://img.shields.io/github/issues-raw/yautil/beepad.svg)](https://github.com/Yautil/beepad/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/yautil/beepad.svg)]()
+
 <div align="center">
 <h1>BeePad</h1>
 	
 ![](https://files.catbox.moe/038x4c.gif)
 
 <p>An Anonym Collaborative Text-Editor and Markdown Parser</p>
-	
-[![Known Vulnerabilities](https://snyk.io/test/github/yautil/beepad/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yautil/beepad?targetFile=package.json)
-[![](https://img.shields.io/github/issues-raw/yautil/beepad.svg)](https://github.com/Yautil/beepad/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/yautil/beepad.svg)]()
 
 </div>
 
@@ -28,6 +30,7 @@ If needed, install webpack and run ```npx webpack src/client.js dist/client.js``
 ![](https://files.catbox.moe/xdus4o.gif)
 ![](https://files.catbox.moe/lv39ew.png)
 ![](https://files.catbox.moe/1oxkm7.png)
+
 
 ## GNU GPLv3.0+
 ````
