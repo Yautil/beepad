@@ -148,3 +148,4 @@ io.on("connection", socket => {
 //  Console Output
 console.log(`======= ${chalk.black.bgWhite("BEEPAD SERVER")} =======
 ${chalk.green("Server is running on PORT")} ${chalk.yellow(server_port)}`);
+if (process.env.TEST) process.exit(0);
