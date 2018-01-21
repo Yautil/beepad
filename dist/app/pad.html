@@ -34,7 +34,7 @@
                     <a id="copy" class="nav-link copy-btn" href="#">Link Kopieren</a>
                 </li>
                 <li class="nav-item">
-                    <a id="lock" class="nav-link" onclick="lockThisDoc();" style="color: orange" href="#">Lock Erstellen</a>
+                    <a id="lock" class="nav-link" onclick="lockThisDoc();" style="color: orange" href="#">Snapshot Erstellen</a>
                 </li>
             </ul>
             <a href="https://github.com/s0t7x">
@@ -145,6 +145,10 @@
         new Clipboard(".copy-btn", {
             text: () => { return window.location.host + window.location.pathname; }
         });
+
+        if (padPermalink.includes("lock")) {
+            document.getElementById("lock").innerHTML = "";
+        }
 
         // Function to create a Text Patch
         function patch_create(newText) {
