@@ -6,6 +6,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/yautil/beepad/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yautil/beepad?targetFile=package.json)
 [![](https://img.shields.io/github/issues-raw/yautil/beepad.svg)](https://github.com/Yautil/beepad/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/yautil/beepad.svg)]()
+[![Waffle.io - Issues in progress](https://badge.waffle.io/Yautil/beepad.png?label=in%20progress&title=In%20Progress)](http://waffle.io/Yautil/beepad)
 
 ![](https://files.catbox.moe/038x4c.gif)
 
