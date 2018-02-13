@@ -4,6 +4,7 @@
   "description": "anonym collaborative online text-editor",
   "main": "server.js",
   "scripts": {
+    "start": "PORT=40001 node server.js",
     "test": "npm install && npm start"
   },
   "author": "Yautil",
