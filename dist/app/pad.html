@@ -164,7 +164,7 @@
             //may be problematic here cause of timing problems
             cursor_start = beePad.selectionStart;
             cursor_end = beePad.selectionEnd;
-            var offset=0;
+            var offset = 0;
             diff.forEach(element => {
                 if (element[0] == -1) {
                     offset -= element[1].length;
@@ -173,7 +173,7 @@
                     offset += element[1].length;
                 }
             });
-            console.log(offset);
+            console.log("Offset: " + offset + "  cursorStart: " + obj.cursorS + " eigener Cursor start: " + cursor_start + " cursorEnde: " + obj.cursorE + " eigener Ende: " + cursor_end);
             if (obj.cursorS < cursor_start)
                 cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
 
@@ -200,7 +200,7 @@
 
         // Client-Response to "applyChanges"
         socket.on("applyChanges", (newText, useDMP) => {
-          
+
             // Depending on Server Configurations either use DMP or directly update
             if (useDMP) {
                 patch_apply(patch_create(newText));
@@ -224,11 +224,11 @@
             var json = '{"cursorS":' + cursor_start + ',"cursorE":' + cursor_end + ',"pad":' + '"' + beePad.value + '"' + '}';
 
             socket.emit("deployChanges", padPermalink, json)
-           
+
         }
-        function getCursors(){
-            cursor_start =  beePad.selectionStart;
-            cursor_end =  beePad.selectionEnd;
+        function getCursors() {
+            cursor_start = beePad.selectionStart;
+            cursor_end = beePad.selectionEnd;
         }
 
         // Funtion to directly parse markdown into div
