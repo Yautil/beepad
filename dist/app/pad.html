@@ -125,13 +125,12 @@
         converter.setFlavor('github');
         converter.setOption("openLinksInNewWindow", "true");
         converter.setOption("tables", "true");
-        converter.setOption("")
+        // converter.setOption("")
 
         // Little Helper
         var beePad = document.getElementById("beePad");
 
         //cursor positions
-
         var cursor_start = 0;
         var cursor_end = 0;
 
@@ -157,7 +156,7 @@
 
         // Function to create a Text Patch
         function patch_create(newText, cursorStart, cursorEnd) {
-           
+
             var myText = beePad.value;
             var diff = dmp.diff_main(myText, newText, true);
 
@@ -173,7 +172,7 @@
                     offset += element[1].length;
                 }
             });
-            console.log("Offset: " + offset + "  cursorStart: " + cursorSend + " eigener Cursor start: " + cursor_start + " cursorEnde: " + cursorEnd + " eigener Ende: " + cursor_end);
+            console.log("Offset: " + offset + "  cursorStart: " + cursorStart + " eigener Cursor start: " + cursor_start + " cursorEnde: " + cursorEnd + " eigener Ende: " + cursor_end);
             if (cursorStart <= cursor_start)
                 cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
 
@@ -221,7 +220,7 @@
         function deployChanges() {
             parseMarkdown();
 
-          
+
             socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end);
 
         }
