@@ -218,6 +218,7 @@
 
         socket.on("pong", (sendTime) => {
             var myTime = Math.floor(Date.now());
+            console.log(sendTime);
             var time = myTime - sendTime;
             console.log("pong came back after " + time + "ms");
         });
