@@ -32,7 +32,7 @@ var chalk = require("chalk");
 
 //  Configurations
 const dev = true;
-const useDMP = false;
+const useDMP = true;
 const server_port = process.env.PORT || 80;
 const db_uri = "mongodb://localhost/beePad";
 
