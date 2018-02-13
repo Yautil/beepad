@@ -6,8 +6,10 @@
    // Socket.io Handler
    const socket = io();
 
-   // Diff_Match_Patch Handler
-   var dmp = new diff_match_patch();
+   // Diff_Match_Patch Handler, wenn der sich benimmt, darf er auch wieder ins Projekt!
+   // var dmp = new diff_match_patch();
+   // Hier ist jsdiff aber würdiger Ersatz!
+
    // Showdown Handler to parse markdown
    var converter = new showdown.Converter();
    // Configurations for showdown
@@ -43,65 +45,53 @@
        document.getElementById("lock").innerHTML = "";
    }
 
-   // Function to create a Text Patch
-   function patch_create(newText, cursorStart, cursorEnd) {
+   // OLD Function to create a Text Patch
+//    function patch_create(newText, cursorStart, cursorEnd) {
 
-       var myText = beePad.value;
-       var diff = dmp.diff_main(myText, newText, true);
+//        var myText = beePad.value;
+//        var diff = dmp.diff_main(myText, newText, true);
 
-       //may be problematic here cause of timing problems
-       cursor_start = beePad.selectionStart;
-       cursor_end = beePad.selectionEnd;
-       var offset = 0;
-       diff.forEach(element => {
-           if (element[0] == -1) {
-               offset -= element[1].length;
-           }
-           if (element[0] == 1) {
-               offset += element[1].length;
-           }
-       });
-       console.log("Offset: " + offset + "  cursorStart: " + cursorStart + " eigener Cursor start: " + cursor_start + " cursorEnde: " + cursorEnd + " eigener Ende: " + cursor_end);
-       if (cursorStart <= cursor_start)
-           cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
+//        //may be problematic here cause of timing problems
+//        cursor_start = beePad.selectionStart;
+//        cursor_end = beePad.selectionEnd;
+//        var offset = 0;
+//        diff.forEach(element => {
+//            if (element[0] == -1) {
+//                offset -= element[1].length;
+//            }
+//            if (element[0] == 1) {
+//                offset += element[1].length;
+//            }
+//        });
+//        console.log("Offset: " + offset + "  cursorStart: " + cursorStart + " eigener Cursor start: " + cursor_start + " cursorEnde: " + cursorEnd + " eigener Ende: " + cursor_end);
+//        if (cursorStart <= cursor_start)
+//            cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
 
-       if (cursorEnd <= cursor_end)
-           cursor_end = (cursor_end + offset < 0) ? 0 : cursor_end + offset;
+//        if (cursorEnd <= cursor_end)
+//            cursor_end = (cursor_end + offset < 0) ? 0 : cursor_end + offset;
 
 
-       if (diff.length > 2) {
-           dmp.diff_cleanupEfficiency(diff);
-       }
+//        if (diff.length > 2) {
+//            dmp.diff_cleanupEfficiency(diff);
+//        }
 
-       var patch_list = dmp.patch_make(myText, newText, diff);
-       return dmp.patch_toText(patch_list);
-   }
+//        var patch_list = dmp.patch_make(myText, newText, diff);
+//        return dmp.patch_toText(patch_list);
+//    }
 
-   // Function to apply a Text Patch
-   function patch_apply(patch_text, cursorPositons) {
-       var myText = beePad.value;
-       var patches = dmp.patch_fromText(patch_text);
+   // OLD Function to apply a Text Patch
+//    function patch_apply(patch_text, cursorPositons) {
+//        var myText = beePad.value;
+//        var patches = dmp.patch_fromText(patch_text);
 
-       var results = dmp.patch_apply(patches, myText);
-       beePad.value = results[0];
-   }
+//        var results = dmp.patch_apply(patches, myText);
+//        beePad.value = results[0];
+//    }
 
    // Client-Response to "applyChanges"
-   socket.on("applyChanges", (newText, cursorStart, cursorEnd, useDMP) => {
-
-       // Depending on Server Configurations either use DMP or directly update
-       if (useDMP) {
-           patch_apply(patch_create(newText, cursorStart, cursorEnd));
-       } else {
-           beePad.value = newText;
-       }
-
-       //use new global cursor positions
-       // Jump to our new cursor position
-       beePad.selectionStart = cursor_start;
-       beePad.selectionEnd = cursor_end;
-
-
+   socket.on("applyChanges", (newText) => {
+       patch = JsDiff.createPatch("fileName", beePad.value, newText, "oldHeader", "newHeader")
+       beePad.value = JsDiff.applyPatch(beePad.value, patch);
        parseMarkdown();
    });
 
@@ -119,10 +109,9 @@
    // Tell server that we have made some changes and want to deploy them
    function deployChanges() {
        parseMarkdown();
-
-
-       socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end);
+       socket.emit("deployChanges", padPermalink, beePad.value);
    }
+
    function getCursors() {
        cursor_start = beePad.selectionStart;
        cursor_end = beePad.selectionEnd;

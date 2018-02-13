@@ -22,7 +22,6 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 var socketio = require("socket.io");
-var dmp = require("diff-match-patch");
 
 //  #   MongoDB Module
 var mongoose = require("mongoose");
@@ -126,13 +125,13 @@ io.on("connection", socket => {
     });
 
     // send newText to other Clients
-    socket.on("deployChanges", (padPermalink, newText, cursorStart, cursorEnd) => {
+    socket.on("deployChanges", (padPermalink, newText) => {
         if (!(padPermalink.includes("lock"))) {
             dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
                 if (err && dev) console.log(err);
                 if (dev) console.log(res);
             });
-        socket.to(padPermalink).emit("applyChanges", newText, cursorStart, cursorEnd, useDMP)
+        socket.to(padPermalink).emit("applyChanges", newText);
         };
     })
 
