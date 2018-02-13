@@ -222,7 +222,7 @@
             parseMarkdown();
 
             var json = '{"cursorS":' + cursor_start + ',"cursorE":' + cursor_end + ',"pad":' + '"' + beePad.value + '"' + '}';
-
+            console.dir(json);
             socket.emit("deployChanges", padPermalink, json)
 
         }
