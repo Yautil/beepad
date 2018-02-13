@@ -218,7 +218,6 @@
 
         socket.on("blub", (sendTime) => {
             var myTime = Math.floor(Date.now());
-            console.log(sendTime);
             var time = myTime - sendTime;
             console.log("pong came back after " + time + "ms");
         });
@@ -234,7 +233,6 @@
 
 
             socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end);
-
         }
         function getCursors() {
             cursor_start = beePad.selectionStart;

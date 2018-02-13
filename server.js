@@ -32,7 +32,7 @@ var chalk = require("chalk");
 
 //  Configurations
 const dev = true;
-const useDMP = true;
+const useDMP = false;
 const server_port = process.env.PORT || 80;
 const db_uri = "mongodb://localhost/beePad";
 
@@ -126,7 +126,6 @@ io.on("connection", socket => {
 
     // send newText to other Clients
     socket.on("deployChanges", (padPermalink, newText, cursorStart, cursorEnd) => {
-        
         if (!(padPermalink.includes("lock"))) {
             dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
                 if (err && dev) console.log(err);
@@ -142,7 +141,7 @@ io.on("connection", socket => {
                 if (err && dev) console.log(err);
                 if (dev) console.log(res);
             });
-        socket.to(padPermalink).emit("applyChanges", newText, useDMP);
+        socket.to(padPermalink).emit("applyChanges", newText, cursorStart, cursorEnd, useDMP);
     })
 
     socket.on("bla", (sendTime) => {
