@@ -145,9 +145,8 @@ io.on("connection", socket => {
         socket.to(padPermalink).emit("applyChanges", newText, useDMP);
     })
 
-    socket.on("ping", (callback) => {
-        var serverTime = Math.floor(Date.now());
-        return callback(serverTime);
+    socket.on("ping", (sendTime) => {
+        socket.emit("pong", sendTime);
     })
 });
 

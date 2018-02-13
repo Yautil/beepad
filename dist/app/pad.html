@@ -216,15 +216,16 @@
             parseMarkdown();
         });
 
+        socket.on("pong", (sendTime) => {
+            var myTime = Math.floor(Date.now());
+            var time = myTime - sendTime;
+            console.log("pong came back in " + time + "ms");
+        });
+
         function getLatency() {
             var myTime = Math.floor(Date.now());
-            var serverTime;
             console.log("myTime: " + myTime);
-            socket.emit("ping", (callback) => {
-                console.log("iam in callback");
-                serverTime = callback - myTime;
-            });
-            console.log("Latency: " + serverTime + "ms");
+            socket.emit("ping", myTime);
         }
 
         // Tell server that we have made some changes and want to deploy them
