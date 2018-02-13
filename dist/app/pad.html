@@ -129,7 +129,7 @@
 
         // Little Helper
         var beePad = document.getElementById("beePad");
-
+        var beePadVersion = 0;
         //cursor positions
 
         var cursor_start = 0;
@@ -157,7 +157,7 @@
 
         // Function to create a Text Patch
         function patch_create(newText, cursorStart, cursorEnd) {
-           
+
             var myText = beePad.value;
             var diff = dmp.diff_main(myText, newText, true);
 
@@ -199,8 +199,8 @@
         }
 
         // Client-Response to "applyChanges"
-        socket.on("applyChanges", (newText, cursorStart, cursorEnd, useDMP) => {
-
+        socket.on("applyChanges", (newText, cursorStart, cursorEnd, version, useDMP) => {
+            beePadVersion = version;
             // Depending on Server Configurations either use DMP or directly update
             if (useDMP) {
                 patch_apply(patch_create(newText, cursorStart, cursorEnd));
@@ -221,8 +221,8 @@
         function deployChanges() {
             parseMarkdown();
 
-          
-            socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end);
+
+            socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end, beePadVersion);
 
         }
         function getCursors() {

@@ -22,6 +22,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 var socketio = require("socket.io");
+var dmp = require("diff_match_patch"); //added for server dmp
 
 //  #   MongoDB Module
 var mongoose = require("mongoose");
@@ -88,6 +89,13 @@ var dbSchema = mongoose.Schema({
 
 var dbModel = mongoose.model("Pad", dbSchema);
 
+//Save pad and version ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+var topVersion = 0;
+var topPad = "";
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 //  Providing Connection Logic
 //  #   On a new Connection...
 io.on("connection", socket => {
@@ -125,23 +133,38 @@ io.on("connection", socket => {
     });
 
     // send newText to other Clients
-    socket.on("deployChanges", (padPermalink, newText, cursorStart, cursorEnd) => {
-        
-        if (!(padPermalink.includes("lock"))) {
-            dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
-                if (err && dev) console.log(err);
-                if (dev) console.log(res);
-            });
-        socket.to(padPermalink).emit("applyChanges", newText, cursorStart, cursorEnd, useDMP)
-        };
+    socket.on("deployChanges", (padPermalink, newText, cursorStart, cursorEnd, beePadVersion) => {
+
+        if (topVersion <= beePadVersion) {
+            topVersion++;
+            //dmp 
+            var diff = dmp.diff_main(myText, newText, true);
+            if (diff.length > 2) {
+                dmp.diff_cleanupEfficiency(diff);
+            }
+            var patch_list = dmp.patch_make(myText, newText, diff);
+            var patch_text = dmp.patch_toText(patch_list);
+            var patches = dmp.patch_fromText(patch_text);
+            var results = dmp.patch_apply(patches, myText);
+            topPad = results[0];
+            //
+
+            if (!(padPermalink.includes("lock"))) {
+                dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: topPad }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
+                    if (err && dev) console.log(err);
+                    if (dev) console.log(res);
+                });
+                socket.to(padPermalink).emit("applyChanges", topPad, cursorStart, cursorEnd, topVersion, useDMP)
+            };
+        }
     })
 
     socket.on("lockDoc", (padPermalink, newText) => {
-            padPermalink = padPermalink + "lock"
-            dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
-                if (err && dev) console.log(err);
-                if (dev) console.log(res);
-            });
+        padPermalink = padPermalink + "lock"
+        dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
+            if (err && dev) console.log(err);
+            if (dev) console.log(res);
+        });
         socket.to(padPermalink).emit("applyChanges", newText, useDMP);
     })
 });
