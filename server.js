@@ -148,7 +148,7 @@ io.on("connection", socket => {
     socket.on("bla", (sendTime) => {
         console.log("Got some Ping, make some Pong");
         console.log(sendTime);
-        socket.to(padPermalink).emit("blub", sendTime);
+        socket.emit("blub", sendTime);
     })
 });
 
