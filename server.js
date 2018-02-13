@@ -138,7 +138,7 @@ io.on("connection", socket => {
         if (topVersion <= beePadVersion) {
             topVersion++;
             //dmp 
-            var diff = dmp.diff_main(myText, newText, true);
+            var diff = dmp.diff_main(topPad, newText, true);
             if (diff.length > 2) {
                 dmp.diff_cleanupEfficiency(diff);
             }
