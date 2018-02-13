@@ -146,7 +146,7 @@ io.on("connection", socket => {
     })
 
     socket.on("ping", (sendTime) => {
-        socket.emit("pong", sendTime);
+        socket.to(padPermalink).emit("pong", sendTime);
     })
 });
 

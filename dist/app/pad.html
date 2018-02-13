@@ -219,7 +219,7 @@
         socket.on("pong", (sendTime) => {
             var myTime = Math.floor(Date.now());
             var time = myTime - sendTime;
-            console.log("pong came back in " + time + "ms");
+            console.log("pong came back after " + time + "ms");
         });
 
         function getLatency() {
