@@ -218,7 +218,9 @@
 
         function getLatency() {
             myTime = Math.floor(Date.now());
+            console.log(myTime);
             socket.emit("ping", (callback) => {
+                console.log(callback);
                 var time = callback - myTime;
                 console.log("Latency: " + time + "ms");
             });
