@@ -92,7 +92,7 @@ var dbModel = mongoose.model("Pad", dbSchema);
 //Save pad and version ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var topVersion = 0;
 var topPad = "";
-dmp = new dmpr();
+var dmp = new dmpr();
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -148,6 +148,7 @@ io.on("connection", socket => {
             var patches = dmp.patch_fromText(patch_text);
             var results = dmp.patch_apply(patches, myText);
             topPad = results[0];
+        }
             //
 
             if (!(padPermalink.includes("lock"))) {
@@ -157,7 +158,7 @@ io.on("connection", socket => {
                 });
                 socket.to(padPermalink).emit("applyChanges", topPad, cursorStart, cursorEnd, topVersion, useDMP)
             };
-        }
+        
     })
 
     socket.on("lockDoc", (padPermalink, newText) => {
