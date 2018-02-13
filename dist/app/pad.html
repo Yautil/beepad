@@ -218,12 +218,13 @@
 
         function getLatency() {
             var myTime = Math.floor(Date.now());
+            var serverTime;
             console.log("myTime: " + myTime);
             socket.emit("ping", (callback) => {
                 console.log("iam in callback");
-                var time = callback - myTime;
-                console.log("Latency: " + time + "ms");
+                serverTime = callback - myTime;
             });
+            console.log("Latency: " + serverTime + "ms");
         }
 
         // Tell server that we have made some changes and want to deploy them
