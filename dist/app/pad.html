@@ -216,7 +216,7 @@
             parseMarkdown();
         });
 
-        socket.on("pong", (sendTime) => {
+        socket.on("blub", (sendTime) => {
             var myTime = Math.floor(Date.now());
             console.log(sendTime);
             var time = myTime - sendTime;
@@ -225,8 +225,7 @@
 
         function getLatency() {
             var myTime = Math.floor(Date.now());
-            console.log("myTime: " + myTime);
-            socket.emit("ping", myTime);
+            socket.emit("bla", myTime);
         }
 
         // Tell server that we have made some changes and want to deploy them

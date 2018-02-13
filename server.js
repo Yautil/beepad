@@ -145,9 +145,10 @@ io.on("connection", socket => {
         socket.to(padPermalink).emit("applyChanges", newText, useDMP);
     })
 
-    socket.on("ping", (sendTime) => {
+    socket.on("bla", (sendTime) => {
         console.log("Got some Ping, make some Pong");
-        socket.to(padPermalink).emit("pong", sendTime);
+        console.log(sendTime);
+        socket.to(padPermalink).emit("blub", sendTime);
     })
 });
 
