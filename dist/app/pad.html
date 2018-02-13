@@ -231,10 +231,10 @@
         function deployChanges() {
             parseMarkdown();
 
-
+            console.log(beePadVersion);
             socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end, beePadVersion);
 
-            socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end);
+            
         }
         function getCursors() {
             cursor_start = beePad.selectionStart;

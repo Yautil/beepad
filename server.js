@@ -134,7 +134,7 @@ io.on("connection", socket => {
 
     // send newText to other Clients
     socket.on("deployChanges", (padPermalink, newText, cursorStart, cursorEnd, beePadVersion) => {
-        console.log(topVersion+" ::: " +beePadVersion);
+        console.log(topVersion+" ::: " + beePadVersion);
         if (topVersion <= beePadVersion) {
             topVersion++;
             //dmp 
