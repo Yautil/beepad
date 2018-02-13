@@ -216,6 +216,14 @@
             parseMarkdown();
         });
 
+        function getLatency() {
+            myTime = Math.floor(Date.now());
+            socket.emit("ping", (serverTime) => {
+                time = serverTime - myTime;
+                console.log("Latency: " + time + "ms");
+            });
+        }
+
         // Tell server that we have made some changes and want to deploy them
         function deployChanges() {
             parseMarkdown();
