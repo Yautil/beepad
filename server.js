@@ -22,7 +22,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 var socketio = require("socket.io");
-var dmp = require("diff_match_patch"); //added for server dmp
+var dmp = require("diff-match-patch"); //added for server dmp
 
 //  #   MongoDB Module
 var mongoose = require("mongoose");
