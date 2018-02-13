@@ -22,7 +22,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 var socketio = require("socket.io");
-var dmp = require("diff-match-patch"); //added for server dmp
+var dmpr = require("diff-match-patch"); //added for server dmp
 
 //  #   MongoDB Module
 var mongoose = require("mongoose");
@@ -92,6 +92,7 @@ var dbModel = mongoose.model("Pad", dbSchema);
 //Save pad and version ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var topVersion = 0;
 var topPad = "";
+dmp = new DiffMatchPatch();
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
