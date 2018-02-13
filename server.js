@@ -126,8 +126,9 @@ io.on("connection", socket => {
 
     // send newText to other Clients
     socket.on("deployChanges", (padPermalink, newText) => {
+        var obj = JSON.parse(newText);
         if (!(padPermalink.includes("lock"))) {
-            dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: newText }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
+            dbModel.findOneAndUpdate({ "permalink": padPermalink }, { text: obj.pad }, { upsert: true, new: true, setDefaultsOnInsert: true }, (err, res) => {
                 if (err && dev) console.log(err);
                 if (dev) console.log(res);
             });

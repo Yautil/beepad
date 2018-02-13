@@ -48,7 +48,7 @@
     <div class="row" style="min-height: 80%; height: auto !important; height: 80%; max-height: 80%; overflow:hidden; margin: 0 auto -100px; padding-top:10px; vertical-align:bottom;">
         <div class="col-md-6">
             <h2>⬇️Dein Pad</h2>
-            <textarea id="beePad" onkeyup="deployChanges();" style="height:100%; width:100%;"></textarea>
+            <textarea id="beePad" onkeyup="deployChanges();" onkeydown="getCursors();" style="height:100%; width:100%;"></textarea>
         </div>
         <div class="col-md-6">
             <h2>
@@ -130,6 +130,11 @@
         // Little Helper
         var beePad = document.getElementById("beePad");
 
+        //cursor positions
+
+        var cursor_start = 0;
+        var cursor_end = 0;
+
         // Tell Server, we want to join our permalink Pad
         socket.emit("joinPad", padPermalink, (callback) => {
             document.getElementById("serverStatus").innerHTML = callback.msg;
@@ -152,11 +157,32 @@
 
         // Function to create a Text Patch
         function patch_create(newText) {
+            var obj = JSON.parse(newText);
             var myText = beePad.value;
-            var diff = dmp.diff_main(myText, newText, true);
+            var diff = dmp.diff_main(myText, obj.pad, true);
+
+            //may be problematic here cause of timing problems
+            cursor_start = beePad.selectionStart;
+            cursor_end = beePad.selectionEnd;
+            var offset;
+            diff.forEach(element => {
+                if (element[0] == -1) {
+                    offset -= element[1].length;
+                }
+                if (element[0] == 1) {
+                    offset += element[1].length;
+                }
+            });
+            console.log(offset);
+            if (obj.cursorS < cursor_start)
+                cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
+
+            if (obj.cursorE < cursor_end)
+                cursor_end = (cursor_end + offset < 0) ? 0 : cursor_end + offset;
+
 
             if (diff.length > 2) {
-                dmp.diff_cleanupSemantic(diff);
+                dmp.diff_cleanupEfficiency(diff);
             }
 
             var patch_list = dmp.patch_make(myText, newText, diff);
@@ -164,7 +190,7 @@
         }
 
         // Function to apply a Text Patch
-        function patch_apply(patch_text) {
+        function patch_apply(patch_text, cursorPositons) {
             var myText = beePad.value;
             var patches = dmp.patch_fromText(patch_text);
 
@@ -174,25 +200,41 @@
 
         // Client-Response to "applyChanges"
         socket.on("applyChanges", (newText, useDMP) => {
-            // Remember our cursor position
-            var cursor_start = beePad.selectionStart;
-            var cursor_end = beePad.selectionEnd;
+            /*no need to remember cursor positon here, it has to be updated
+    
+                // Remember our cursor position
+                var cursor_start = beePad.selectionStart;
+                var cursor_end = beePad.selectionEnd;
+                
+                */
             // Depending on Server Configurations either use DMP or directly update
             if (useDMP) {
                 patch_apply(patch_create(newText));
             } else {
                 beePad.value = newText;
             }
-            // Jump Back to our old cursor position
+            //use new global cursor positions
+
+            // Jump to our new cursor position
             beePad.selectionStart = cursor_start;
             beePad.selectionEnd = cursor_end;
+
+
             parseMarkdown();
         });
 
         // Tell server that we have made some changes and want to deploy them
         function deployChanges() {
             parseMarkdown();
-            socket.emit("deployChanges", padPermalink, beePad.value)
+
+            var json = '{"cursorS":' + cursor_start + ',"cursorE":' + cursor_end + ',"pad":' + '"' + beePad.value + '"' + '}';
+
+            socket.emit("deployChanges", padPermalink, json)
+           
+        }
+        function getCursors(){
+            cursor_start =  beePad.selectionStart;
+            cursor_end =  beePad.selectionEnd;
         }
 
         // Funtion to directly parse markdown into div
