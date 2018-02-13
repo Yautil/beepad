@@ -156,10 +156,10 @@
         }
 
         // Function to create a Text Patch
-        function patch_create(newText) {
-            var obj = JSON.parse(newText);
+        function patch_create(newText, cursorStart, cursorEnd) {
+           
             var myText = beePad.value;
-            var diff = dmp.diff_main(myText, obj.pad, true);
+            var diff = dmp.diff_main(myText, newText, true);
 
             //may be problematic here cause of timing problems
             cursor_start = beePad.selectionStart;
@@ -173,11 +173,11 @@
                     offset += element[1].length;
                 }
             });
-            console.log("Offset: " + offset + "  cursorStart: " + obj.cursorS + " eigener Cursor start: " + cursor_start + " cursorEnde: " + obj.cursorE + " eigener Ende: " + cursor_end);
-            if (obj.cursorS <= cursor_start)
+            console.log("Offset: " + offset + "  cursorStart: " + cursorSend + " eigener Cursor start: " + cursor_start + " cursorEnde: " + cursorEnd + " eigener Ende: " + cursor_end);
+            if (cursorStart <= cursor_start)
                 cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
 
-            if (obj.cursorE <= cursor_end)
+            if (cursorEnd <= cursor_end)
                 cursor_end = (cursor_end + offset < 0) ? 0 : cursor_end + offset;
 
 
@@ -199,11 +199,11 @@
         }
 
         // Client-Response to "applyChanges"
-        socket.on("applyChanges", (newText, useDMP) => {
+        socket.on("applyChanges", (newText, cursorStart, cursorEnd, useDMP) => {
 
             // Depending on Server Configurations either use DMP or directly update
             if (useDMP) {
-                patch_apply(patch_create(newText));
+                patch_apply(patch_create(newText, cursorStart, cursorEnd));
             } else {
                 beePad.value = newText;
             }
@@ -221,9 +221,8 @@
         function deployChanges() {
             parseMarkdown();
 
-            var json = '{"cursorS":' + cursor_start + ',"cursorE":' + cursor_end + ',"pad":' + '"' + beePad.value + '"' + '}';
-            console.dir(json);
-            socket.emit("deployChanges", padPermalink, json)
+          
+            socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end);
 
         }
         function getCursors() {
