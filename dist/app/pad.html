@@ -200,21 +200,15 @@
 
         // Client-Response to "applyChanges"
         socket.on("applyChanges", (newText, useDMP) => {
-            /*no need to remember cursor positon here, it has to be updated
-    
-                // Remember our cursor position
-                var cursor_start = beePad.selectionStart;
-                var cursor_end = beePad.selectionEnd;
-                
-                */
+          
             // Depending on Server Configurations either use DMP or directly update
             if (useDMP) {
                 patch_apply(patch_create(newText));
             } else {
                 beePad.value = newText;
             }
+            
             //use new global cursor positions
-
             // Jump to our new cursor position
             beePad.selectionStart = cursor_start;
             beePad.selectionEnd = cursor_end;
