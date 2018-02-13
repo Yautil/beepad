@@ -164,7 +164,7 @@
             //may be problematic here cause of timing problems
             cursor_start = beePad.selectionStart;
             cursor_end = beePad.selectionEnd;
-            var offset;
+            var offset=0;
             diff.forEach(element => {
                 if (element[0] == -1) {
                     offset -= element[1].length;
@@ -207,7 +207,7 @@
             } else {
                 beePad.value = newText;
             }
-            
+
             //use new global cursor positions
             // Jump to our new cursor position
             beePad.selectionStart = cursor_start;
