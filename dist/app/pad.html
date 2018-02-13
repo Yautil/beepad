@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de" style="height: 100%;">
+<html lang="de">
 
 <head>
     <!-- Required meta tags -->
@@ -7,17 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" hred="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/markdown_GitHub.css">
     <link rel="stylesheet" href="/css/printMedia.css">
-
+    <link rel="stylesheet" href="/css/client.css">
     <title>BeePad</title>
 </head>
 
-<body style="height: 100%; padding: 0; overflow: hidden;">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="height: 70px;">
-        <img class="" src="https://www.goodfreephotos.com/albums/vector-images/cartoon-bee-vector-art.png" style="height: 40px; padding-right: 10px;"
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <img class="logo" src="https://www.goodfreephotos.com/albums/vector-images/cartoon-bee-vector-art.png" 
         />
         <a class="navbar-brand" href="#">BeePad</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
@@ -34,34 +34,34 @@
                     <a id="copy" class="nav-link copy-btn" href="#">Link Kopieren</a>
                 </li>
                 <li class="nav-item">
-                    <a id="lock" class="nav-link" onclick="lockThisDoc();" style="color: orange" href="#">Snapshot Erstellen</a>
+                    <a id="lock" class="nav-link" onclick="lockThisDoc();" href="#">Snapshot Erstellen</a>
                 </li>
             </ul>
             <a href="https://github.com/s0t7x">
                 <img src="https://cdn.iconscout.com/public/images/icon/free/png-512/github-36cbb10d3617a061-512x512.png" alt="" style="max-height:80px">
             </a>
             <p>Server Status:
-                <div id="serverStatus" style="color:olivedrab"></div>
+                <div id="serverStatus" ></div>
             </p>
         </div>
     </nav>
-    <div class="row" style="min-height: 80%; height: auto !important; height: 80%; max-height: 80%; overflow:hidden; margin: 0 auto -100px; padding-top:10px; vertical-align:bottom;">
+    <div class="row main-row">
         <div class="col-md-6">
             <h2>⬇️Dein Pad</h2>
-            <textarea id="beePad" onkeyup="deployChanges();" onkeydown="getCursors(); deployChanges();" style="height:100%; width:100%;"></textarea>
+            <textarea id="beePad" onkeyup="deployChanges();" onkeydown="getCursors(); deployChanges();"></textarea>
         </div>
         <div class="col-md-6">
             <h2>
                 ⬇️️Markdown
             </h2>
-            <div id="markdown" class="markdown-body" style="overflow-y: scroll; height:100%; width:100%; border:1px solid darkgrey"></div>
+            <div id="markdown" class="markdown-body" ></div>
         </div>
     </div>
-    <div name="footer" style="background-color:#1a1a1a; position:absolute; width: 100%; height: 100px; bottom: 0px;">
+    <div id="footer">
         <center>
-            <div style="border-radius: 1px; margin-top: -15px; color: olivedrab; background-color:#1a1a1a; width: 10%; text-align:center">⬇️️ Markdown Hilfe ⬇️️</div>
+            <div id="md_helper_title">⬇️️ Markdown Hilfe ⬇️️</div>
         </center>
-        <div style="padding: 10px; font-size: 10px; text-align: center;">
+        <div id="md_helper">
             <div class="row">
                 <div class="col-md-2">
                     # Überschrift 1
@@ -103,155 +103,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-    <!-- Clientside Connection Logic -->
     <!-- ........................... -->
-    <script src="/diff_match_patch.js"></script>
+    <script src="/diff-match-patch.js"></script>
     <script src="/showdown.min.js"></script>
+    <!-- Clientside Connection Logic -->
     <script src="/socket.io.js"></script>
-    <script>
-        // Permalink is in Pathname...
-        var padPermalink = window.location.pathname;
-        // ...but behind "/pad/" (5 chars)
-        padPermalink = padPermalink.slice(5);
-
-        // Socket.io Handler
-        const socket = io();
-
-        // Diff_Match_Patch Handler
-        var dmp = new diff_match_patch();
-        // Showdown Handler to parse markdown
-        var converter = new showdown.Converter();
-        // Configurations for showdown
-        converter.setFlavor('github');
-        converter.setOption("openLinksInNewWindow", "true");
-        converter.setOption("tables", "true");
-        // converter.setOption("")
-
-        // Little Helper
-        var beePad = document.getElementById("beePad");
-
-        //cursor positions
-        var cursor_start = 0;
-        var cursor_end = 0;
-
-        // Tell Server, we want to join our permalink Pad
-        socket.emit("joinPad", padPermalink, (callback) => {
-            document.getElementById("serverStatus").innerHTML = callback.msg;
-        });
-
-        // Read what is our initial Text (The One in DB atm.)
-        socket.emit("dbReadText", padPermalink, (callback) => {
-            if (callback == "none") window.location.replace("/");
-            beePad.value = callback;
-            parseMarkdown();
-        });
-
-        new Clipboard(".copy-btn", {
-            text: () => { return window.location.host + window.location.pathname; }
-        });
-
-        if (padPermalink.includes("lock")) {
-            document.getElementById("lock").innerHTML = "";
-        }
-
-        // Function to create a Text Patch
-        function patch_create(newText, cursorStart, cursorEnd) {
-
-            var myText = beePad.value;
-            var diff = dmp.diff_main(myText, newText, true);
-
-            //may be problematic here cause of timing problems
-            cursor_start = beePad.selectionStart;
-            cursor_end = beePad.selectionEnd;
-            var offset = 0;
-            diff.forEach(element => {
-                if (element[0] == -1) {
-                    offset -= element[1].length;
-                }
-                if (element[0] == 1) {
-                    offset += element[1].length;
-                }
-            });
-            console.log("Offset: " + offset + "  cursorStart: " + cursorStart + " eigener Cursor start: " + cursor_start + " cursorEnde: " + cursorEnd + " eigener Ende: " + cursor_end);
-            if (cursorStart <= cursor_start)
-                cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
-
-            if (cursorEnd <= cursor_end)
-                cursor_end = (cursor_end + offset < 0) ? 0 : cursor_end + offset;
-
-
-            if (diff.length > 2) {
-                dmp.diff_cleanupEfficiency(diff);
-            }
-
-            var patch_list = dmp.patch_make(myText, newText, diff);
-            return dmp.patch_toText(patch_list);
-        }
-
-        // Function to apply a Text Patch
-        function patch_apply(patch_text, cursorPositons) {
-            var myText = beePad.value;
-            var patches = dmp.patch_fromText(patch_text);
-
-            var results = dmp.patch_apply(patches, myText);
-            beePad.value = results[0];
-        }
-
-        // Client-Response to "applyChanges"
-        socket.on("applyChanges", (newText, cursorStart, cursorEnd, useDMP) => {
-
-            // Depending on Server Configurations either use DMP or directly update
-            if (useDMP) {
-                patch_apply(patch_create(newText, cursorStart, cursorEnd));
-            } else {
-                beePad.value = newText;
-            }
-
-            //use new global cursor positions
-            // Jump to our new cursor position
-            beePad.selectionStart = cursor_start;
-            beePad.selectionEnd = cursor_end;
-
-
-            parseMarkdown();
-        });
-
-        socket.on("blub", (sendTime) => {
-            var myTime = Math.floor(Date.now());
-            var time = myTime - sendTime;
-            console.log("pong came back after " + time + "ms");
-        });
-
-        function getLatency() {
-            var myTime = Math.floor(Date.now());
-            socket.emit("bla", myTime);
-        }
-
-        // Tell server that we have made some changes and want to deploy them
-        function deployChanges() {
-            parseMarkdown();
-
-
-            socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end);
-        }
-        function getCursors() {
-            cursor_start = beePad.selectionStart;
-            cursor_end = beePad.selectionEnd;
-        }
-
-        // Funtion to directly parse markdown into div
-        function parseMarkdown() {
-            document.getElementById("markdown").innerHTML = converter.makeHtml(beePad.value);
-        }
-
-        function lockThisDoc() {
-            if (!(padPermalink.includes("lock"))) {
-                let lockDoc = padPermalink + "lock";
-                socket.emit("lockDoc", padPermalink, beePad.value);
-                window.location.replace("/pad/" + lockDoc);
-            }
-        }
-    </script>
+    <script src="/beepad_client.js"></script>
 </body>
 
 </html>

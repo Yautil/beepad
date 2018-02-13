@@ -1,13 +1,13 @@
 {
   "name": "beepad",
-  "version": "2.3.13",
+  "version": "4",
   "description": "anonym collaborative online text-editor",
   "main": "server.js",
   "scripts": {
     "start": "PORT=40001 node server.js",
     "test": "npm install && npm start"
   },
-  "author": "Yautil",
+  "author": "Yautil, Matthias Schroer, Benjamin Laws, Ann-Kathrin Hillig",
   "license": "GPL-3.0+",
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -20,9 +20,6 @@
     "path": "^0.12.7",
     "showdown": "^1.8.6",
     "socket.io": "^2.0.4"
-  },
-  "devDependencies": {
-    "uglifyjs-webpack-plugin": "^1.1.6"
   },
   "bin": "server.js",
   "pkg": {
