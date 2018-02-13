@@ -48,7 +48,7 @@
     <div class="row" style="min-height: 80%; height: auto !important; height: 80%; max-height: 80%; overflow:hidden; margin: 0 auto -100px; padding-top:10px; vertical-align:bottom;">
         <div class="col-md-6">
             <h2>⬇️Dein Pad</h2>
-            <textarea id="beePad" onkeyup="deployChanges();" onkeydown="getCursors();" style="height:100%; width:100%;"></textarea>
+            <textarea id="beePad" onkeyup="deployChanges();" onkeydown="getCursors(); deployChanges();" style="height:100%; width:100%;"></textarea>
         </div>
         <div class="col-md-6">
             <h2>
@@ -125,13 +125,12 @@
         converter.setFlavor('github');
         converter.setOption("openLinksInNewWindow", "true");
         converter.setOption("tables", "true");
-        converter.setOption("")
+        // converter.setOption("")
 
         // Little Helper
         var beePad = document.getElementById("beePad");
         var beePadVersion = 0;
         //cursor positions
-
         var cursor_start = 0;
         var cursor_end = 0;
 
@@ -173,7 +172,7 @@
                     offset += element[1].length;
                 }
             });
-            console.log("Offset: " + offset + "  cursorStart: " + cursorSend + " eigener Cursor start: " + cursor_start + " cursorEnde: " + cursorEnd + " eigener Ende: " + cursor_end);
+            console.log("Offset: " + offset + "  cursorStart: " + cursorStart + " eigener Cursor start: " + cursor_start + " cursorEnde: " + cursorEnd + " eigener Ende: " + cursor_end);
             if (cursorStart <= cursor_start)
                 cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
 
@@ -217,6 +216,17 @@
             parseMarkdown();
         });
 
+        socket.on("blub", (sendTime) => {
+            var myTime = Math.floor(Date.now());
+            var time = myTime - sendTime;
+            console.log("pong came back after " + time + "ms");
+        });
+
+        function getLatency() {
+            var myTime = Math.floor(Date.now());
+            socket.emit("bla", myTime);
+        }
+
         // Tell server that we have made some changes and want to deploy them
         function deployChanges() {
             parseMarkdown();
@@ -224,6 +234,7 @@
 
             socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end, beePadVersion);
 
+            socket.emit("deployChanges", padPermalink, beePad.value, cursor_start, cursor_end);
         }
         function getCursors() {
             cursor_start = beePad.selectionStart;
