@@ -174,10 +174,10 @@
                 }
             });
             console.log("Offset: " + offset + "  cursorStart: " + obj.cursorS + " eigener Cursor start: " + cursor_start + " cursorEnde: " + obj.cursorE + " eigener Ende: " + cursor_end);
-            if (obj.cursorS < cursor_start)
+            if (obj.cursorS <= cursor_start)
                 cursor_start = (cursor_start + offset < 0) ? 0 : cursor_start + offset;
 
-            if (obj.cursorE < cursor_end)
+            if (obj.cursorE <= cursor_end)
                 cursor_end = (cursor_end + offset < 0) ? 0 : cursor_end + offset;
 
 
