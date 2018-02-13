@@ -143,10 +143,10 @@ io.on("connection", socket => {
             if (diff.length > 2) {
                 dmp.diff_cleanupEfficiency(diff);
             }
-            var patch_list = dmp.patch_make(myText, newText, diff);
+            var patch_list = dmp.patch_make(topPad, newText, diff);
             var patch_text = dmp.patch_toText(patch_list);
             var patches = dmp.patch_fromText(patch_text);
-            var results = dmp.patch_apply(patches, myText);
+            var results = dmp.patch_apply(patches, topPad);
             topPad = results[0];
         }
             //
