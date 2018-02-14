@@ -103,7 +103,7 @@
 
         // Read what is our initial Text (The One in DB atm.)
         socket.emit("dbReadText", padPermalink, (callback) => {
-            if (callback == "none") window.location.replace("/");
+            // if (callback == "none") window.location.replace("/");
             beePad.value = callback;
             parseMarkdown();
         });
@@ -111,10 +111,6 @@
         new Clipboard(".copy-btn", {
             text: () => { return window.location.host + window.location.pathname; }
         });
-
-        if (padPermalink.includes("lock")) {
-            document.getElementById("lock").innerHTML = "";
-        }
 
         // Client-Response to "applyChanges"
         socket.on("applyChanges", (newText) => {
@@ -133,12 +129,15 @@
             beePad.selectionEnd = tempCaretEnd;
         });
 
+
+        // Pong
         socket.on("blub", (sendTime) => {
             var myTime = Math.floor(Date.now());
             var time = myTime - sendTime;
             console.log("pong came back after " + time + "ms");
         });
 
+        // Ping
         function getLatency() {
             var myTime = Math.floor(Date.now());
             socket.emit("bla", myTime);
