@@ -2,7 +2,7 @@
 <h1>BeePad</h1>
 
 [![GitHub package version](https://img.shields.io/github/package-json/v/yautil/beepad.svg)]()
-[![Build Status](https://travis-ci.org/Yautil/beepad.svg?branch=minimal_stable_v2.3.13)](https://travis-ci.org/Yautil/beepad)
+[![Build Status](https://travis-ci.org/Yautil/beepad.svg?branch=v4)](https://travis-ci.org/Yautil/beepad)
 [![Known Vulnerabilities](https://snyk.io/test/github/yautil/beepad/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yautil/beepad?targetFile=package.json)
 [![](https://img.shields.io/github/issues-raw/yautil/beepad.svg)](https://github.com/Yautil/beepad/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/yautil/beepad.svg)]()
