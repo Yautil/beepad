@@ -31,10 +31,9 @@ var path = require("path");
 var chalk = require("chalk");
 
 //  Configurations
-const dev = true;
-const useDMP = true;
+const dev = process.env.DEVMODE || false;
 const server_port = process.env.PORT || 80;
-const db_uri = "mongodb://localhost/beePad";
+const db_uri = process.env.MONGODBURI || "mongodb://localhost/beePad";
 
 //  Define Request Handler
 var app = express();
@@ -141,7 +140,7 @@ io.on("connection", socket => {
                 if (err && dev) console.log(err);
                 if (dev) console.log(res);
             });
-        socket.to(padPermalink).emit("applyChanges", newText, cursorStart, cursorEnd, useDMP);
+        socket.to(padPermalink).emit("applyChanges", newText);
     })
 
     socket.on("bla", (sendTime) => {
