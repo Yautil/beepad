@@ -71,26 +71,27 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/3.4.0/diff.min.js"></script>
     <script>
-
         // Permalink is in Pathname...
         var padPermalink = window.location.pathname;
-        // ...but behind "/pad/" (5 chars)
-
+        // ...but behind "/debug/" (7 chars)
         padPermalink = padPermalink.slice(7);
 
-
         // Socket.io Handler
-        var socket = io();
+        const socket = io();
 
-        // Diff_Match_Patch Handler
-        var dmp = new diff_match_patch();
+        // Diff_Match_Patch Handler, wenn der sich benimmt, darf er auch wieder ins Projekt!
+        // var dmp = new diff_match_patch();
+        // Hier ist jsdiff aber würdiger Ersatz!
+
         // Showdown Handler to parse markdown
         var converter = new showdown.Converter();
         // Configurations for showdown
         converter.setFlavor('github');
         converter.setOption("openLinksInNewWindow", "true");
         converter.setOption("tables", "true");
+        // converter.setOption("")
 
         // Little Helper
         var beePad = document.getElementById("beePad");
@@ -102,55 +103,51 @@
 
         // Read what is our initial Text (The One in DB atm.)
         socket.emit("dbReadText", padPermalink, (callback) => {
-            // if (callback == "none") window.location.replace("/");
+            if (callback == "none") window.location.replace("/");
             beePad.value = callback;
             parseMarkdown();
         });
 
+        new Clipboard(".copy-btn", {
+            text: () => { return window.location.host + window.location.pathname; }
+        });
 
-        // Function to create a Text Patch
-        function patch_create(newText) {
-            var myText = beePad.value;
-            var diff = dmp.diff_main(myText, newText, true);
-
-            if (diff.length > 2) {
-                dmp.diff_cleanupSemantic(diff);
-            }
-
-            var patch_list = dmp.patch_make(myText, newText, diff);
-            return dmp.patch_toText(patch_list);
-        }
-
-        // Function to apply a Text Patch
-        function patch_apply(patch_text) {
-            var myText = beePad.value;
-            var patches = dmp.patch_fromText(patch_text);
-
-            var results = dmp.patch_apply(patches, myText);
-            beePad.value = results[0];
+        if (padPermalink.includes("lock")) {
+            document.getElementById("lock").innerHTML = "";
         }
 
         // Client-Response to "applyChanges"
-        socket.on("applyChanges", (newText, useDMP) => {
-            // Remember our cursor position
-            var cursor_start = beePad.selectionStart;
-            var cursor_end = beePad.selectionEnd;
-            // Depending on Server Configurations either use DMP or directly update
-            if (useDMP) {
-                patch_apply(patch_create(newText));
-            } else {
-                beePad.value = newText;
-            }
-            // Jump Back to our old cursor position
-            beePad.selectionStart = cursor_start;
-            beePad.selectionEnd = cursor_end;
+        socket.on("applyChanges", (newText) => {
+
+            // Do some fixed caret shit
+            tempCaretStart = beePad.selectionStart;
+            tempCaretEnd = beePad.selectionEnd;
+
+            var patch = JsDiff.createPatch("fileName", beePad.value, newText, "oldHeader", "newHeader");
+            beePad.value = JsDiff.applyPatch(beePad.value, patch);
+
             parseMarkdown();
+
+            // DirtyFix only
+            beePad.selectionStart = tempCaretStart;
+            beePad.selectionEnd = tempCaretEnd;
         });
+
+        socket.on("blub", (sendTime) => {
+            var myTime = Math.floor(Date.now());
+            var time = myTime - sendTime;
+            console.log("pong came back after " + time + "ms");
+        });
+
+        function getLatency() {
+            var myTime = Math.floor(Date.now());
+            socket.emit("bla", myTime);
+        }
 
         // Tell server that we have made some changes and want to deploy them
         function deployChanges() {
             parseMarkdown();
-            socket.emit("deployChanges", padPermalink, beePad.value)
+            socket.emit("deployChanges", padPermalink, beePad.value);
         }
 
         // Funtion to directly parse markdown into div
@@ -159,9 +156,11 @@
         }
 
         function lockThisDoc() {
-            let lockDoc = padPermalink + "lock";
-            socket.emit("lockDoc", padPermalink, beePad.value);
-            window.location.replace("/pad/" + lockDoc);
+            if (!(padPermalink.includes("lock"))) {
+                let lockDoc = padPermalink + "lock";
+                socket.emit("lockDoc", padPermalink, beePad.value);
+                window.location.replace("/pad/" + lockDoc);
+            }
         }
     </script>
 
