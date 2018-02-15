@@ -1,7 +1,7 @@
 <div align="center">
 <h1>BeePad</h1>
 
-[![GitHub package version](https://img.shields.io/github/package-json/v/yautil/beepad.svg)]()
+[![GitHub package version](https://img.shields.io/badge/Version-4.1.3-green.svg?style=flat)]()
 [![Build Status](https://travis-ci.org/Yautil/beepad.svg?branch=v4)](https://travis-ci.org/Yautil/beepad)
 [![Known Vulnerabilities](https://snyk.io/test/github/yautil/beepad/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yautil/beepad?targetFile=package.json)
 [![](https://img.shields.io/github/issues-raw/yautil/beepad.svg)](https://github.com/Yautil/beepad/issues)
