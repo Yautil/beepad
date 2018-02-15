@@ -13,7 +13,7 @@ const socket = io();
 // Showdown Handler to parse markdown
 var converter = new showdown.Converter();
 // Configurations for showdown
-converter.setFlavor('github');
+converter.setFlavor("github");
 converter.setOption("openLinksInNewWindow", "true");
 converter.setOption("tables", "true");
 // converter.setOption("")
@@ -50,7 +50,7 @@ socket.on("applyChanges", (newText) => {
 
     var patch = JsDiff.createPatch("fileName", beePad.value, newText, "oldHeader", "newHeader");
     beePad.value = JsDiff.applyPatch(beePad.value, patch);
-        
+
     parseMarkdown();
 
     // DirtyFix only
@@ -86,4 +86,17 @@ function lockThisDoc() {
         socket.emit("lockDoc", padPermalink, beePad.value);
         window.location.replace("/pad/" + lockDoc);
     }
+}
+
+function printMarkdown() {
+    var mywindow = window.open("", "PRINT", "height=800,width=800");
+    mywindow.document.write("<html><head><title> Created in BeePad </title>");
+    mywindow.document.write("</head><body>");
+    mywindow.document.write(document.getElementById("markdown").innerHTML);
+    mywindow.document.write("</body></html>");
+    mywindow.document.close();
+    mywindow.focus();
+    mywindow.print();
+    mywindow.close();
+    return true;
 }

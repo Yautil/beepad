@@ -9,11 +9,16 @@
     }
 
     .section-to-print {
-        position: absolute;
-        transform: translateX(-50%);
-        left: 0;
+        height: auto;
+        width: 100%;
+        position: fixed;
         top: 0;
-        width: 200%;
-        overflow-y: auto;
+        left: 0;
+        margin: 0;
+        padding: 15px;
+        font-size: 14px;
+        line-height: 18px;
+        display: block;
+        overflow: visible;
     }
 }
