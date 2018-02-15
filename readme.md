@@ -101,7 +101,7 @@ Der Client bekommt Text, muss diese mit dem aktuellen Text abgleichen und den ge
 
 ## Ordnerstruktur
 Die Ordnerstruktur ergibt sich aus dem folgendem Screenshot:
-![screenshot](https://files.catbox.moe/j2y5jo.png)
+![screenshot](https://files.catbox.moe/ll0qn1.png)
 
 Der Ordner ``` .db ```, wie auch der Ordner ``` node_modules ``` sind automatisch generiert.
 
