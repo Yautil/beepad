@@ -1,7 +1,7 @@
 "use strict";
 //  BeePad - NodeJS Server File
 //     BeePad is an anonym collaborative online text-editor
-//     Copyright (C) 2018 Benjamin Laws, Ann-Kathrin Hillig, Matthias Schroer, Miguel Oppermann
+//     Copyright (C) 2018 Benjamin Laws, Ann-Kathrin Hillig, Matthias Schroer, Miguel Oppermann, Yautil
 
 //     This program is free software: you can redistribute it and/or modify
 //     it under the terms of the GNU General Public License as published by
