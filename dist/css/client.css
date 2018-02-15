@@ -30,13 +30,13 @@ nav {
 }
 
 #beePad {
-    height:97%;
+    height:95%;
     width:100%;
 }
 
 #markdown {
     overflow-y: scroll;
-    height:97%;
+    height:95%;
     width:100%;
     border:1px solid darkgrey;
 }
