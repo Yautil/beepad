@@ -15,7 +15,7 @@
     "diff-match-patch": "^1.0.0",
     "express": "^4.16.2",
     "method-override": "^2.3.10",
-    "mongoose": "^4.13.9",
+    "mongoose": "^4.13.17",
     "path": "^0.12.7",
     "showdown": "^1.8.6",
     "socket.io": "^2.0.4"
