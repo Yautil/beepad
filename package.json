@@ -17,7 +17,7 @@
     "method-override": "^2.3.10",
     "mongoose": "^4.13.9",
     "path": "^0.12.7",
-    "showdown": "^1.8.6",
+    "showdown": "^1.9.1",
     "socket.io": "^2.0.4"
   },
   "bin": "server.js",
