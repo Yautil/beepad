@@ -18,7 +18,7 @@
     "mongoose": "^4.13.9",
     "path": "^0.12.7",
     "showdown": "^1.8.6",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.4.0"
   },
   "bin": "server.js",
   "pkg": {
